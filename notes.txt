@@ -1,0 +1,68 @@
+Cookies:
+  Small pieces of data stored on client side to identify a user.
+  HTTP essentially has no state. So we use a cookie, which asks the server "hey
+  tell me who I am", and this cookie is then used to identify the user. 
+
+  This creates a session.
+
+You can think of a cookie as a key-value store, but they have some special properties:
+  Expires = You can set an expiry date. If not set, the cookie lasts for the duration
+    of the session
+  Set-Cookie: username=bobbytables; Expires=Thu, 29 Feb 2024 17:45:00 GMT;
+
+  Max Age = Similar to the concept above
+  Set-Cookie: username=bobbytables; Max Age=2592000;
+
+You cannot delete a cookie. So a solution is to set the expiry date in the past.
+
+Cookies can be viewed in the application tab of the console.
+
+Properties in cookies:
+1. HttpOnly: Prevents JS from accessing the cookie (via document.cookie for example)
+2. Secure: Ensures that cookie is sent to server only when using Https.
+  Adds resistance to man-in-the-middle attacks.
+
+
+Signing a cookie:
+A lightweight format of encrypting a cookie.
+
+app.use(cookieParser(cookieSecret));
+By using a cookieSecret, we now know if the value of the cookie
+  ever changes (think hash functions)
+
+Sometimes, you do not want your cookies to be signed.
+Just remember that occasionally we'll need to use JS on our cookies.
+
+We generate a sessionId for the user. This way, we do not have to expose
+  the username as a cookie at any point. 
+
+Note: We shouldn't allow attackers to break in, but also, in case
+  an attack happens, we need to ensure we have mechanisms for the worst possible case.
+
+Same Origin Policy:
+A security measure implemented by web browsers to restrict how documents
+  or scripts loaded from one origin interact with resources from other origins
+
+The origin is a tuple with three parts: Protocol + Host + Port
+
+The browser checks the protocol (https, http), the host/domain (frontendmasters.com) and 
+  the port (443). If the three are the same, then the browser considers the origin 
+  to be the same.
+
+So same site and same origin do not necessarily mean the same thing.
+
+Issues with cookies:
+1. Session Hijacking - Exploit active sessions. Essentially, you convince the server you are another user
+
+2. Cross-site scripting - Using scripts and input fields to get access to cookies.
+
+3. Cross-site Request Forgery  - A user is tricked into executing actions via a forged request.
+
+Session Hijacking:
+  a. Privilege escalation: When an attacker gets access to resources that regular users
+    cannot use, like admin access.
+    1. The attacker gets access to limited information of the system/app
+    2. He identifies vulnerabilities within this system
+    3. They use these weaknesses to gain higher privileges than originally intended
+    4. With these escalated privileges, they can do however much the privileges allow
+      them.
