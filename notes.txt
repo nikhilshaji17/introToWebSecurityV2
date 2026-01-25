@@ -49,7 +49,7 @@ The browser checks the protocol (https, http), the host/domain (frontendmasters.
   the port (443). If the three are the same, then the browser considers the origin 
   to be the same.
 
-So same site and same origin do not necessarily mean the same thing.
+So same site and same origin do not necessarily mean the same thing. (Eg. localhost:3000 and localhost:4001, different origin)
 
 Issues with cookies:
 1. Session Hijacking - Exploit active sessions. Essentially, you convince the server you are another user
@@ -66,3 +66,27 @@ Session Hijacking:
     3. They use these weaknesses to gain higher privileges than originally intended
     4. With these escalated privileges, they can do however much the privileges allow
       them.
+
+SQL Injection:
+  When you inject a malicious SQL query into a URL or input field, to get access to information.
+  Example: 
+  Suppose our input field asks for a password, and the user types:
+    Password = ' OR 1=1--
+  Then the SQL query becomes:
+    SELECT * FROM users WHERE email = 'robert.d.tables@frontendmasters.com' AND password = '' OR 1=1--'
+  Essentially:
+  
+  ' = closing the SQL string
+  OR = Either condition can be true
+  1=1 = Always evaluates to true
+  -- = Starts a comment in SQL
+
+  So through the input field, an attacker can access any account.
+  Thus, we need INPUT SANITIZATION.
+
+Parameter injection:
+  Similar to the concept above, except we inject into JSON objects as opposed to SQL queries.
+
+Command Injection:
+  Same as above, but for shell commands instead.
+
