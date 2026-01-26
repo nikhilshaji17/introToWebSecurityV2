@@ -133,5 +133,41 @@ example = ETLD + 1
 You need to find a good tradeoff between security and usability, if you use SameSite strict everywhere, 
   then the UX is very poor (imagine logging in constantly on an online shop vs a bank)
 
-To prevent Cross Site Request Forgery:
-  Generate a unique token: 
+CORS:
+  Cross-origin resource sharing:
+  CORS calls work on your AJAX and fetch calls, but they do not work on your forms.
+  So for forms, you still require a CSRF token.
+
+  Also, simple requests are not subject to CORS policies:
+  You are not a simple request if:
+  a. Content-type is not text/plain, application/x-www-form-urlencoded, multipart/form-data
+  b. The request method is something other than GET, POST or HEAD
+
+Cross-Site Scripting:
+  Different types of XSS:
+    Stored: The malicious data is stored in the database or somewhere in the backend
+    Reflected: The malicious data is slid into the URL or query params
+    DOM-based: The malicious data that is input into the DOM
+
+  XSS => Code is injected into your site
+  CSRF => Your request/cookie/session is forged.
+
+Best practices for XSS:
+1. Input sanitization
+2. Output encoding
+3. CSP
+4. Use safe methods: Try to avoid dangerouslySetInnerHtml
+5. Use battle-tested libraries and frameworks 
+
+Safe Sink:
+A place where you can out data without being susceptible to XSS. Basically an area that 
+  disallows code execution.
+
+Example: 
+  element.textContent is a safe sink
+  element.innerHTML is not a safe sink
+
+element.value is safe
+element.setAttribute is safe
+document.createElement is safe
+
