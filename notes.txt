@@ -13,9 +13,28 @@ You can think of a cookie as a key-value store, but they have some special prope
   Max Age = Similar to the concept above
   Set-Cookie: username=bobbytables; Max Age=2592000;
 
+  SameSite = This will send the cookie, depending on the property it is set with:
+  
+  SameSite=None: This will send the cookie, regardless on what site it is going to. Ad trackers use this, hence they
+    know your online activity.
+
+  SameSite=Lax: Allows cookies to be sent with top-level navigations and if the request method is safe (GET or HEAD).
+    These methods do not modify user data. 
+
+  SameSite=Strict: Only include the cookie, if the request is sent from the same site that set the cookie.
+
+  (Remember, same site != same origin)
+
+
 You cannot delete a cookie. So a solution is to set the expiry date in the past.
 
 Cookies can be viewed in the application tab of the console.
+
+Why use cookies:
+1. HTTP is a stateless protocol. It does not remember users. So each time we refresh, we 
+  would have to login again
+2. If a cookie is stolen, we can just revoke that cookie. If credentials get stolen, it is
+  a lot more complicated
 
 Properties in cookies:
 1. HttpOnly: Prevents JS from accessing the cookie (via document.cookie for example)
@@ -90,3 +109,29 @@ Parameter injection:
 Command Injection:
   Same as above, but for shell commands instead.
 
+https://app.example.com:443
+scheme://sub-domain.domain:port-number
+
+The entire link above is the origin, this include the port number
+
+https://app.example.com
+The entire link above is the site
+
+As you can see cross-origin request != cross-site request
+
+http, https: protocol
+app: subdomain
+example = domain (top-level domain + 1)
+.com = top-level domain 
+:443 = port number
+
+https://app.example.github.io
+
+.github.io = effective top level domain
+example = ETLD + 1
+
+You need to find a good tradeoff between security and usability, if you use SameSite strict everywhere, 
+  then the UX is very poor (imagine logging in constantly on an online shop vs a bank)
+
+To prevent Cross Site Request Forgery:
+  Generate a unique token: 
