@@ -171,3 +171,11 @@ element.value is safe
 element.setAttribute is safe
 document.createElement is safe
 
+Clickjacking:
+Imagine adding a link, and setting it's opacity to 0. Then, adding another link in front
+  of it that the user actually wants to click, in the hopes that the malicious invisible link 
+  is clicked instead. This is clickjacking.
+
+We can use X-Frame-Options header and set is to DENY or SAMEORIGIN.
+We can also use the CSP property 'frame-ancestors' to specify which origins are allowed to embed
+  content.
